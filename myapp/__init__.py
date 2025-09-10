@@ -23,5 +23,8 @@ def create_app(test_config=None):
     # import and register blueprints from the main/ 
     from myapp.main import main_bp
     app.register_blueprint(main_bp)
+    
+    from . import db
+    db.init_app(app)
 
     return app
