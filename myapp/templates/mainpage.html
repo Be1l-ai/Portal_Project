@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Home - Portal Project{% endblock %}
+
+{% block header%}
+ <h1>Welcome to the Portal Project</h1> 
+{% endblock %}
+
+{% block content %}
+    <h2>Welcome to the Portal Project Main Page</h2>
+    <p>This is the main page for registered users.</p>
+    
+    {% if g.user %}
+    <p>Hello, {{ g.user['username'] }}! <a href="{{ url_for('main.logout') }}">Logout</a></p>
+    {% endif %}
+
+{% endblock %}

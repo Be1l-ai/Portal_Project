@@ -1,5 +1,7 @@
 import os
 from flask import Flask, render_template
+from flask import session, g
+from myapp.db import get_db
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -26,5 +28,19 @@ def create_app(test_config=None):
     
     from . import db
     db.init_app(app)
+    
+    @app.before_request
+    def load_logged_in_user():
+        user_id = session.get("user_id")
 
+        if user_id is None:
+            g.user = None
+        else:
+            g.user = get_db().execute(
+                "SELECT * FROM user WHERE id = ?", (user_id,)
+            ).fetchone()
+    
     return app
+
+    
+
