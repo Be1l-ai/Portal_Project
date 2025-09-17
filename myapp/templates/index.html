@@ -5,10 +5,29 @@
  <h1>Welcome to the Portal Project</h1> 
 {% endblock %}
 
+{% block nav %}
+    <nav>
+      <a href="{{ url_for('feedback.index') }}">Home</a> |
+      <a href="{{ url_for('auth.login') }}">Login</a> |
+      <a href="{{ url_for('auth.register') }}">Register</a> |
+      <a href="{{ url_for('main.mainpage') }}">Main Page</a>
+    </nav>
+{% endblock %}
+
 {% block content %}
     <h2>Welcome to the Portal Project</h2>
     <p>This is the home page.</p>
-    <p><a href="{{ url_for('main.login') }}">Login</a></p>
-    <p><a href="{{ url_for('main.register') }}">Register</a></p>
+    <p><a href="{{ url_for('auth.login') }}">Login</a></p>
+    <p><a href="{{ url_for('auth.register') }}">Register</a></p>
+
+    <div>
+        <form method="POST">
+            <label for="feedback">Submit your feedback here:</label><br>
+            <input type="text" id="company_id" name="company_id" value="{{ request.form['company_id'] }}" required><br>
+            <input type="text" id="title" name="title" value="{{ request.form['title'] }}" required><br>
+            <input type="text" id="feedback" name="feedback" value="{{ request.form['feedback'] }}" required><br>
+            <button type="submit" value="feedback">Submit Feedback</button>
+        </form>
+    </div>
 
 {% endblock %}

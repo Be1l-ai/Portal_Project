@@ -3,6 +3,15 @@
  <h1> Register </h1> 
 {% endblock %}
 
+{% block nav %}
+    <nav>
+      <a href="{{ url_for('feedback.index') }}">Home</a> |
+      <a href="{{ url_for('auth.login') }}">Login</a> |
+      <a href="{{ url_for('auth.register') }}">Register</a> |
+      <a href="{{ url_for('main.mainpage') }}">Main Page</a>
+    </nav>
+{% endblock %}
+
 {% block content %}
   <div class="register-form">
     <form method="POST">

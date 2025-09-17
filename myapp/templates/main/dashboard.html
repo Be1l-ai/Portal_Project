@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Portal Project{% endblock %}
+
+{% block header%}
+ <h1>Welcome to the Portal Project</h1> 
+{% endblock %}
+
+{% block nav %}
+    <nav>
+      <a href="{{ url_for('feedback.index') }}">Home</a> |
+      <a href="{{ url_for('auth.logout') }}">Log Out</a> |
+      <a href="{{ url_for('main.mainpage') }}">Main Page</a> |
+      <a href="{{ url_for('main.dashboard') }}">Dashboard</a> 
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <h2>Welcome to the Portal Project Dashboard</h2>
+    
+    {% if g.user %}
+    <p>Hello, {{ g.user['username'] }}! </p>
+    {% endif %}
+
+    <div>
+        <h3>Current Feedback</h3>
+        <ul method="GET">
+            {% for feedback in feedback_list %}
+            <ul>
+                <li id="author-comid">{{ feedback['title'] }}: {{ feedback['company_id'] }}</li>
+                <li id="date">{{ feedback['created'] }}</li>
+                <li id="content-body">{{ feedback['body'] }}</li><br>
+            </ul>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}

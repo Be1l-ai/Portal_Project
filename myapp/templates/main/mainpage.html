@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Home - Portal Project{% endblock %}
+
+{% block header%}
+ <h1>Welcome to the Portal Project</h1> 
+{% endblock %}
+
+{% block nav %}
+    <nav>
+      <a href="{{ url_for('feedback.index') }}">Home</a> |
+      <a href="{{ url_for('auth.logout') }}">Log Out</a> |
+      <a href="{{ url_for('main.mainpage') }}">Main Page</a> |
+      <a href="{{ url_for('main.dashboard') }}">Dashboard</a> 
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <h2>Welcome to the Portal Project Main Page</h2>
+    <p>This is the main page for registered users.</p>
+    
+    {% if g.user %}
+    <p>Hello, {{ g.user['username'] }}! </p>
+    {% endif %}
+
+{% endblock %}

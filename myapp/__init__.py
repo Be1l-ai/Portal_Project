@@ -22,9 +22,13 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # import and register blueprints from the main/ 
+    # import and register blueprints from the main/ and auth/ and feedback/
     from myapp.main import main_bp
+    from myapp.auth import auth_bp
+    from myapp.feedback import feedback_bp
     app.register_blueprint(main_bp)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(feedback_bp)
     
     from . import db
     db.init_app(app)
