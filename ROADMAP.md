@@ -9,14 +9,14 @@
 ---
 
 ## Week 1 – Setup & Auth
-- [/] Flask project setup
-- [/] User registration/login/logout
-- [/] SQLite database
+- [x] Flask project setup
+- [x] User registration/login/logout
+- [x] SQLite database
 
 ## Week 2 – Feedback System
-- [/] Public feedback form (company-specific link)
-- [/] Store feedback in database
-- [/] Company dashboard (view all feedback)
+- [x] Public feedback form (company-specific link)
+- [x] Store feedback in database
+- [x] Company dashboard (view all feedback)
 
 ## Week 3 – Feedback Management
 - [ ] Add categories and features (bug, feature, complaint)
