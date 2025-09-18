@@ -26,12 +26,22 @@
         <ul method="GET">
             {% for feedback in feedback_list %}
             <ul>
-                <li id="author-comid">{{ feedback['title'] }}: {{ feedback['company_id'] }}</li>
+                <li id="comid">{{ feedback['title'] }}: {{ feedback['company_id'] }}</li>
                 <li id="date">{{ feedback['created'] }}</li>
                 <li id="content-body">{{ feedback['body'] }}</li><br>
             </ul>
             {% endfor %}
         </ul>
     </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class="flashes">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% endwith %}
 
 {% endblock %}

@@ -22,12 +22,30 @@
 
     <div>
         <form method="POST">
-            <label for="feedback">Submit your feedback here:</label><br>
-            <input type="text" id="company_id" name="company_id" value="{{ request.form['company_id'] }}" required><br>
+            <label for="select_company">Choose a Receiver:</label><br>
+            <select id="select_company" name="select_company" value="{{ request.form.get('select_company', '') }}"
+ required><br>
+                <option value="" disabled selected>Select a company</option>
+                {% for company in user_list %}
+                    <option value="{{ company['id'] }}">{{ company["username"] }}</option>
+                {% endfor %}
+            </select> <br>
+            <label for="title">Title:</label><br>
             <input type="text" id="title" name="title" value="{{ request.form['title'] }}" required><br>
+
+            <label for="feedback">Feedback:</label><br>
             <input type="text" id="feedback" name="feedback" value="{{ request.form['feedback'] }}" required><br>
             <button type="submit" value="feedback">Submit Feedback</button>
         </form>
     </div>
 
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class="flashes">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% endwith %}
 {% endblock %}

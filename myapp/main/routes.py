@@ -9,18 +9,18 @@ from myapp.utils import login_required
 def mainpage():
     return render_template('main/mainpage.html')
 
-@main_bp.route("/dashboard")
+@main_bp.route("/dashboard", methods=["GET"])
 @login_required
 def dashboard():
     if request.method == "GET":
         db = get_db()
         feedback_list = db.execute(
-            "SELECT title, company_id, created, body FROM feedback ORDER BY created DESC"
+            "SELECT title, company_id, created, body FROM feedback WHERE company_id = ? ORDER BY created DESC",
+            (session.get("user_id"),)
         ).fetchall()
         error = None
         if feedback_list is None:
             error = "No feedback found."
-        if error is not None:
             flash(error)
 
     return render_template("main/dashboard.html",  feedback_list=feedback_list)

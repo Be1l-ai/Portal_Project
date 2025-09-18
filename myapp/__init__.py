@@ -26,9 +26,9 @@ def create_app(test_config=None):
     from myapp.main import main_bp
     from myapp.auth import auth_bp
     from myapp.feedback import feedback_bp
-    app.register_blueprint(main_bp)
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(feedback_bp)
+    app.register_blueprint(main_bp, url_prefix="/main")
+    app.register_blueprint(auth_bp, url_prefix="/auth")
+    app.register_blueprint(feedback_bp, url_prefix="/feedback")
     
     from . import db
     db.init_app(app)

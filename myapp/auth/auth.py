@@ -15,11 +15,11 @@ def login():
         
         if user is None:
             error = "Incorrect username."
+            flash(error)
         elif user["password"] != password:
             error = "Incorrect password."
-        
-        if error is not None:
             flash(error)
+        
         else:
             session.clear() 
             session["user_id"] = user["id"] #is this safe??? --answer: supposedly yes but also no
@@ -34,11 +34,11 @@ def register():
         error = None
         if not username:
             error = "Username is required."
+            flash(error)
         elif not password:
             error = "Password is required."
-                
-        if error is not None:
             flash(error)
+                
         else:
             db = get_db()
             try:
@@ -50,6 +50,7 @@ def register():
                 db.commit()
             except db.IntegrityError:
                 error = f"User {username} is already registered."
+                flash(error)
             else:
                 return redirect(url_for("auth.login"))
     return render_template("auth/register.html")
