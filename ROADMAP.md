@@ -2,7 +2,7 @@
 
 ## Tech Stack
 - **Backend:** Python (Flask)
-- **Frontend:** HTML, CSS, Bootstrap
+- **Frontend:** HTML, CSS, Tailwind
 - **Database:** SQLite (development) → PostgreSQL (production)
 - **Deployment:** Render
 
