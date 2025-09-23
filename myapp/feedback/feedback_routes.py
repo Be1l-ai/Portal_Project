@@ -5,9 +5,9 @@ from myapp.db import get_db
 @feedback_bp.route("/index", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        select_company = request.form.get('select_company', '')
+        select_company = request.form.get('select_company', '') #fix this
         title = request.form["title"]
-        feedback = request.form["feedback"]
+        feedback = request.form["feedback"] #add character limit and spam prevention
         error = None
         if not feedback:
             error = "Feedback is required to submit."
@@ -17,7 +17,7 @@ def index():
             db = get_db()
             db.execute(
                 "INSERT INTO feedback (company_id, title, body) VALUES (?, ?, ?)",
-                (select_company, title, feedback,)
+                (select_company, title, feedback,) #replace this shit with more secure shit later
             )
             db.commit()
             flash("Feedback submitted successfully!")
@@ -27,7 +27,7 @@ def index():
        db = get_db()
        user_list = db.execute(
            "SELECT id, username FROM user"
-       ).fetchall()
+       ).fetchall() #replace this shit with more secure shit later
        error = None
        if user_list is None:
            error = "No users found."

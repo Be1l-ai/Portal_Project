@@ -11,7 +11,7 @@ def login():
         db = get_db()
         user = db.execute(
             "SELECT * FROM user WHERE username = ?", (username,)
-        ).fetchone()
+        ).fetchone() #replace this shit with more secure shit later
         
         if user is None:
             error = "Incorrect username."
@@ -21,16 +21,16 @@ def login():
             flash(error)
         
         else:
-            session.clear() 
-            session["user_id"] = user["id"] #is this safe??? --answer: supposedly yes but also no
+            session.clear() #add session timer for inactivity
+            session["user_id"] = user["id"] #make this safe too
             return redirect(url_for("main.mainpage"))
     return render_template("auth/login.html")
 
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        password = request.form["password"]
-        username = request.form["username"]
+        password = request.form["password"] #add character limit
+        username = request.form["username"] #here too
         error = None
         if not username:
             error = "Username is required."
@@ -57,5 +57,5 @@ def register():
 
 @auth_bp.route("/logout")
 def logout():
-    session.clear()
+    session.clear() #add session timer
     return redirect(url_for("feedback.index"))

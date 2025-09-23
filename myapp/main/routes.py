@@ -11,7 +11,7 @@ def mainpage():
 
 @main_bp.route("/dashboard", methods=["GET"])
 @login_required
-def dashboard():
+def dashboard(): #add sorting system and search system
     if request.method == "GET":
         db = get_db()
         feedback_list = db.execute(
@@ -25,10 +25,3 @@ def dashboard():
 
     return render_template("main/dashboard.html",  feedback_list=feedback_list)
 
-
-# things to change
-#1st is the security -- dont know how to fix this for now -- still not fixed
-#2nd is redirects -- fixed
-#3rd is the code placement -- fixed
-#4th is the front end
-#5th i think the database is messed up? -- fixed
