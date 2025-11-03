@@ -1,61 +1,68 @@
 from flask import render_template, request, redirect, url_for, flash, session, g
+from werkzeug.security import generate_password_hash, check_password_hash
 from . import auth_bp
 from myapp.db import get_db
 
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form.get("username", "")
+        password = request.form.get("password", "")
         error = None
         db = get_db()
-        user = db.execute(
-            "SELECT * FROM user WHERE username = ?", (username,)
-        ).fetchone() #replace this shit with more secure shit later
         
-        if user is None:
-            error = "Incorrect username."
+        try:
+            user = db.execute(
+                "SELECT * FROM user WHERE username = ?", (username,)
+            ).fetchone()
+            
+            if user is None:
+                error = "Incorrect username."
+            elif not check_password_hash(user["password"], password):
+                error = "Incorrect password."
+            
+            else:
+                session.clear()
+                session["user_id"] = user["id"]
+                return redirect(url_for("main.mainpage"))
+        except Exception as e:
+            error = f"Error: {e}"
+
+        if error:
             flash(error)
-        elif user["password"] != password:
-            error = "Incorrect password."
-            flash(error)
-        
-        else:
-            session.clear() #add session timer for inactivity
-            session["user_id"] = user["id"] #make this safe too
-            return redirect(url_for("main.mainpage"))
     return render_template("auth/login.html")
 
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        password = request.form["password"] #add character limit
-        username = request.form["username"] #here too
+        password = request.form.get("password", "")
+        username = request.form.get("username", "")
         error = None
         if not username:
             error = "Username is required."
-            flash(error)
         elif not password:
             error = "Password is required."
-            flash(error)
-                
+        elif len(password) < 8:
+            error = "Password must be at least 8 characters long."
+        elif len(username) < 3 or len(username) > 30:
+            error = "Username must be between 3 and 30 characters long."
         else:
             db = get_db()
             try:
                 db.execute(
                     "INSERT INTO user (username, password) VALUES (?, ?)",
-                    (username, password),
-                    #replace this shit with more secure shit later
+                    (username, generate_password_hash(password)),
                 )
                 db.commit()
+                flash("Registration successful!")
+                return redirect(url_for("auth.login"))
             except db.IntegrityError:
                 error = f"User {username} is already registered."
-                flash(error)
-            else:
-                return redirect(url_for("auth.login"))
+        if error:
+            flash(error)
     return render_template("auth/register.html")
 
 @auth_bp.route("/logout")
 def logout():
-    session.clear() #add session timer
+    session.clear()
     return redirect(url_for("feedback.index"))

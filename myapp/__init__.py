@@ -1,20 +1,17 @@
 import os
-from flask import Flask, render_template
+from flask import Flask
 from flask import session, g
 from myapp.db import get_db
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY = 'dev',  # change this in production
-        DATABASE = os.path.join(app.instance_path, 'flask.sqlite')
+        SECRET_KEY='dev',  # no need to change not meant for production
+        DATABASE=os.path.join(app.instance_path, 'flask.sqlite')
     )
     if test_config is None:
-        # load the instance config, if it exists, when not testing
+        # no test config but when needed load the instance config
         app.config.from_pyfile('config.py', silent=True)
-    else:
-        # load the test config if passed in
-        app.config.from_mapping(test_config)
 
     # ensure the instance folder exists
     try:
@@ -45,6 +42,4 @@ def create_app(test_config=None):
             ).fetchone()
     
     return app
-
-    
 

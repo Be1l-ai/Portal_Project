@@ -1,9 +1,8 @@
-from flask import render_template, request, redirect, url_for, flash, session, g
+from flask import render_template, request, flash, session, g
 from . import main_bp
 from myapp.db import get_db
 from myapp.utils import login_required
 
-# a simple page that says hello
 @main_bp.route("/mainpage", methods=["GET"])
 @login_required
 def mainpage():
@@ -18,10 +17,8 @@ def dashboard(): #add sorting system and search system
             "SELECT title, company_id, created, body FROM feedback WHERE company_id = ? ORDER BY created DESC",
             (session.get("user_id"),)
         ).fetchall()
-        error = None
-        if feedback_list is None:
-            error = "No feedback found."
-            flash(error)
+        if not feedback_list:
+            flash("No feedback found.")
 
     return render_template("main/dashboard.html",  feedback_list=feedback_list)
 
